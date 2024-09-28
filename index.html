@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHELSEA FC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif; /* Standard font */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: transparent; /* Fully transparent background */
+            color: black; /* Standard text color */
+            text-align: center;
+        }
+
+        #quiz-container {
+            background-color: transparent; /* Fully transparent container */
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        #logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .answer {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: white; /* Change the answer color to white */
+        }
+
+        #next-button {
+            background-color: white; /* Change background color to white */
+            color: black; /* Change text color to black for visibility */
+            border: 2px solid #ff9900; /* Optional: Add a border for better visibility */
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        #next-button:hover {
+            background-color: #ffcc00; /* Change hover color for better effect */
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fadeOut {
+            animation: fadeOut 0.5s forwards;
+        }
+
+        .fadeIn {
+            animation: fadeIn 0.5s forwards;
+        }
+    </style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <img id="logo" src="https://i.imgur.com/cyZ0Z21.png" alt="Chelsea FC Logo">
+    <h1>CHELSEA FC</h1>
+    <div id="question-container">
+        <div class="question" id="question">Loading question...</div>
+        <div class="answer" id="answer">Loading answer...</div>
+        <button id="next-button" onclick="nextQuestion()">Next Question</button>
+    </div>
+</div>
+
+<script>
+    // Question and answers data
+    const quizData = [
+        { question: "When was Chelsea Football Club founded?", answer: "1905." },
+        { question: "What is the home stadium of Chelsea FC?", answer: "Stamford Bridge." },
+        { question: "What are the club colors of Chelsea FC?", answer: "Blue and white." },
+        { question: "Who is Chelsea FC’s all-time top scorer?", answer: "Frank Lampard." },
+        { question: "Which year did Chelsea FC win their first Premier League title?", answer: "2005." },
+        { question: "Who was the manager during Chelsea’s first Premier League title win?", answer: "José Mourinho." },
+        { question: "How many times has Chelsea won the FA Cup?", answer: "8 times (as of 2024)." },
+        { question: "What nickname is Chelsea FC commonly known by?", answer: "The Blues." },
+        { question: "Which player holds the record for the most appearances for Chelsea FC?", answer: "Ron Harris." },
+        { question: "In what year did Chelsea win their first UEFA Champions League title?", answer: "2012." },
+        { question: "Who did Chelsea beat in the final to win their first Champions League title?", answer: "Bayern Munich." },
+        { question: "What is the capacity of Stamford Bridge?", answer: "Approximately 40,000." },
+        { question: "Who scored the winning penalty for Chelsea in the 2012 Champions League final?", answer: "Didier Drogba." },
+        { question: "Which club did Chelsea sign Eden Hazard from in 2012?", answer: "Lille OSC." },
+        { question: "How many UEFA Europa League titles has Chelsea won?", answer: "2 (2013 and 2019)." },
+        { question: "Which year did Chelsea FC finish 10th in the Premier League, leading to the sacking of their manager?", answer: "2015." },
+        { question: "Who was Chelsea's first-ever manager?", answer: "John B. D. G. Shankly." },
+        { question: "In what year did Chelsea FC win their first League Cup?", answer: "1965." },
+        { question: "Who is the current owner of Chelsea FC (as of 2024)?", answer: "Todd Boehly (Co-owner)." },
+        { question: "Which famous goalkeeper played for Chelsea from 2004 to 2015?", answer: "Petr Čech." },
+        { question: "What year did Chelsea win the UEFA Super Cup?", answer: "2022." },
+        { question: "Which player famously scored the equalizing goal in the 2012 Champions League final?", answer: "Didier Drogba." },
+        { question: "Which former Chelsea player is known for his iconic long-range goals and his spell at Arsenal?", answer: "Cesc Fàbregas." },
+        { question: "What is the name of Chelsea's women's team?", answer: "Chelsea Women (formerly Chelsea Ladies)." },
+        { question: "Who was the first Chelsea player to win the PFA Player of the Year award?", answer: "Peter Osgood." },
+        { question: "What is the name of Chelsea's youth academy?", answer: "The Chelsea Academy." },
+        { question: "Who did Chelsea defeat in the 2019 UEFA Europa League final?", answer: "Arsenal." },
+        { question: "Which player was Chelsea's captain during their Champions League victory in 2012?", answer: "John Terry." },
+        { question: "What is the traditional chant of Chelsea fans?", answer: "'Blue is the Colour.'" },
+        { question: "In what year did Chelsea relocate to Stamford Bridge?", answer: "1905." },
+        { question: "Who was the manager of Chelsea FC during the 2017 Premier League title win?", answer: "Antonio Conte." },
+        { question: "What is the Chelsea FC mascot called?", answer: "Stamford the Lion." },
+        { question: "Which former Chelsea player holds the record for most goals in a single season?", answer: "Jimmy Floyd Hasselbaink (36 goals in 2000-01)." },
+        { question: "In what season did Chelsea FC achieve their first double (Premier League and FA Cup)?", answer: "2010." },
+        { question: "Who did Chelsea face in the 2008 Champions League final?", answer: "Manchester United." },
+        { question: "What year did Chelsea first compete in the Premier League?", answer: "1992." },
+        { question: "Who was the top scorer for Chelsea in the 2019-20 season?", answer: "Tammy Abraham." },
+        { question: "What was the original name of Chelsea FC?", answer: "Chelsea Football Club." },
+        { question: "Who did Chelsea sign from Marseille in 2006?", answer: "Didier Drogba." },
+        { question: "Which player scored a hat-trick in the 2019 Europa League final?", answer: "Eden Hazard." },
+        { question: "Which trophy did Chelsea win in 2021, defeating Manchester City?", answer: "UEFA Champions League." },
+        { question: "Who is Chelsea's all-time appearance leader in the Premier League?", answer: "Frank Lampard." },
+        { question: "What was the name of Chelsea’s first official stadium?", answer: "Stamford Bridge." },
+        { question: "Which former Chelsea manager was known for his 'parking the bus' tactics?", answer: "José Mourinho." },
+        { question: "Which Chelsea player won the Golden Boot in the Premier League for the 2016-17 season?", answer: "Diego Costa." },
+        { question: "In which year did Chelsea FC win the UEFA Champions League for the second time?", answer: "2021." },
+        { question: "Who scored the first goal in the 2021 UEFA Champions League final for Chelsea?", answer: "Kai Havertz." },
+        { question: "What is the name of Chelsea’s official supporters' group?", answer: "Chelsea Supporters' Trust." },
+        { question: "Who is the current manager of Chelsea FC (as of 2024)?", answer: "Mauricio Pochettino." },
+        { question: "What major event did Chelsea celebrate in 2020?", answer: "The club's 115th anniversary." }
+    ];
+
+    let currentQuestionIndex = 0;
+
+    // Shuffle the questions
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    shuffle(quizData);
+
+    // Load the current question and answer
+    function loadQuestion() {
+        const questionContainer = document.getElementById("question");
+        const answerContainer = document.getElementById("answer");
+
+        const currentQuestion = quizData[currentQuestionIndex];
+
+        questionContainer.classList.add("fadeOut");
+        answerContainer.classList.add("fadeOut");
+
+        setTimeout(() => {
+            questionContainer.innerText = currentQuestion.question;
+            answerContainer.innerText = currentQuestion.answer;
+
+            questionContainer.classList.remove("fadeOut");
+            questionContainer.classList.add("fadeIn");
+            answerContainer.classList.remove("fadeOut");
+            answerContainer.classList.add("fadeIn");
+        }, 500);
+    }
+
+    // Move to the next question
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < quizData.length) {
+            loadQuestion();
+        } else {
+            const questionContainer = document.getElementById("question");
+            const answerContainer = document.getElementById("answer");
+            questionContainer.innerText = "Quiz Completed!";
+            answerContainer.innerText = "";
+            document.getElementById("next-button").style.display = "none"; // Hide the next button
+        }
+    }
+
+    // Initial load
+    loadQuestion();
+</script>
+
+</body>
+</html>
